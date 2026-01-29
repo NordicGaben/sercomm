@@ -28,7 +28,4 @@
 /** libsercomm version. */
 #define SER_VERSION "${PROJECT_VERSION}${PROJECT_VERSION_EXTRA}"
 
-/** libsercomm is built as a static library. */
-#cmakedefine SER_STATIC
-
 #endif
