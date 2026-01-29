@@ -220,7 +220,7 @@ if(WITH_DOCS)
   find_package(Doxygen REQUIRED)
 
   # Doxyfile variables
-  set(DOCS_TMPL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/template
+  set(DOCS_TMPL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/template)
   set(DOCS_OUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs)
 
   set(DOCS_EXAMPLES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/examples)
