@@ -26,9 +26,6 @@
 #define PUBLIC_SERCOMM_DEV_H_
 
 #include "common.h"
-#include "types.h"
-
-#include <string.h>
 
 SER_BEGIN_DECL
 
@@ -47,35 +44,32 @@ typedef struct ser_dev_mon ser_dev_mon_t;
 #define SER_DEV_PATH_SZ 128U
 
 /** Serial device. */
-typedef struct
-{
-    /** Path (e.g. COM1, /dev/ttyS0, ...) */
-    char path[SER_DEV_PATH_SZ];
-    /** Vendor ID (USB only) */
-    uint16_t vid;
-    /** Product ID (USB only) */
-    uint16_t pid;
+typedef struct {
+  /** Path (e.g. COM1, /dev/ttyS0, ...) */
+  char path[SER_DEV_PATH_SZ];
+  /** Vendor ID (USB only) */
+  uint16_t vid;
+  /** Product ID (USB only) */
+  uint16_t pid;
 } ser_dev_t;
 
 /** Serial devices list. */
 typedef struct ser_dev_list ser_dev_list_t;
 
 /** Serial devices list (structure). */
-struct ser_dev_list
-{
-    /** Serial device */
-    ser_dev_t dev;
-    /** Next device */
-    ser_dev_list_t *next;
+struct ser_dev_list {
+  /** Serial device */
+  ser_dev_t dev;
+  /** Next device */
+  ser_dev_list_t *next;
 };
 
 /** Serial devices monitor event types. */
-typedef enum
-{
-    /** Device added */
-    SER_DEV_EVT_ADDED,
-    /** Device removed */
-    SER_DEV_EVT_REMOVED
+typedef enum {
+  /** Device added */
+  SER_DEV_EVT_ADDED,
+  /** Device removed */
+  SER_DEV_EVT_REMOVED
 } ser_dev_evt_t;
 
 /** Event callback. */
@@ -91,7 +85,7 @@ typedef void (*ser_dev_on_event_t)(void *ctx, ser_dev_evt_t event,
  * @see
  *      ser_dev_list_destroy
  */
-SER_EXPORT ser_dev_list_t *ser_dev_list_get();
+SER_EXPORT ser_dev_list_t *ser_dev_list_get(void);
 
 /**
  * Destroy a list of devices.
@@ -105,8 +99,8 @@ SER_EXPORT ser_dev_list_t *ser_dev_list_get();
 SER_EXPORT void ser_dev_list_destroy(ser_dev_list_t *lst);
 
 /** Utility macro to iterate over a list of serial devices. */
-#define ser_dev_list_foreach(item, lst) \
-    for ((item) = (lst); (item) != NULL; (item) = (item)->next)
+#define ser_dev_list_foreach(item, lst)                                        \
+  for ((item) = (lst); (item) != NULL; (item) = (item)->next)
 
 /**
  * Initialize the serial devices monitor.
