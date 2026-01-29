@@ -54,16 +54,11 @@ if(WITH_GITINFO)
   )
 endif()
 
-# Build a shared library by default
-if(NOT DEFINED BUILD_SHARED_LIBS)
-  set(BUILD_SHARED_LIBS ON)
-endif()
-
 if(NOT BUILD_SHARED_LIBS)
   set(SER_STATIC ON)
 endif()
 
-configure_file("config.h.in" "${CMAKE_BINARY_DIR}/config.h")
+configure_file("config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/config.h")
 
 #-------------------------------------------------------------------------------
 # Compiler options
@@ -129,6 +124,10 @@ endif()
 
 add_library(sercomm ${sercomm_srcs})
 
+if(NOT BUILD_SHARED_LIBS)
+  target_compile_definitions(sercomm PUBLIC SER_STATIC)
+endif()
+
 # Options
 if(WITH_PIC)
   set_target_properties(sercomm PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -141,7 +140,7 @@ target_include_directories(
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/public>"
-    "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
     "$<INSTALL_INTERFACE:include>"
 )
 
@@ -221,8 +220,8 @@ if(WITH_DOCS)
   find_package(Doxygen REQUIRED)
 
   # Doxyfile variables
-  set(DOCS_TMPL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/template)
-  set(DOCS_OUT_DIR ${CMAKE_BINARY_DIR}/docs)
+  set(DOCS_TMPL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/template
+  set(DOCS_OUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs)
 
   set(DOCS_EXAMPLES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/examples)
   set(DOCS_SRCS_LST
@@ -236,7 +235,7 @@ if(WITH_DOCS)
   # Generate Doxyfile
   configure_file(
     "docs/template/Doxyfile.in"
-    "${CMAKE_BINARY_DIR}/Doxyfile"
+    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
   )
 
   # Add 'docs' target
@@ -256,19 +255,19 @@ include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
-  "${CMAKE_BINARY_DIR}/sercommConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/sercommConfig.cmake"
   INSTALL_DESTINATION "lib/cmake/sercomm"
 )
 
 write_basic_package_version_file(
-  "${CMAKE_BINARY_DIR}/sercommConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/sercommConfigVersion.cmake"
   COMPATIBILITY SameMajorVersion
 )
 
 install(
   FILES
-    "${CMAKE_BINARY_DIR}/sercommConfig.cmake"
-    "${CMAKE_BINARY_DIR}/sercommConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/sercommConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/sercommConfigVersion.cmake"
   DESTINATION
     "lib/cmake/sercomm"
   COMPONENT cmake
@@ -298,7 +297,7 @@ install(
 )
 
 install(
-  FILES "${CMAKE_BINARY_DIR}/config.h"
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/config.h"
   DESTINATION "include/sercomm"
   COMPONENT headers
 )
