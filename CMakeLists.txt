@@ -26,11 +26,11 @@
 #-------------------------------------------------------------------------------
 # General
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10...3.28)
 project(sercomm LANGUAGES C VERSION 1.3.2)
 
 set(CMAKE_MODULE_PATH
-  ${CMAKE_SOURCE_DIR}/cmake
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake
 )
 
 #-------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ if(WITH_GITINFO)
 
   execute_process(
     COMMAND ${GIT_EXECUTABLE} log -1 --format=%h
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     OUTPUT_VARIABLE PROJECT_VERSION_EXTRA
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
@@ -138,9 +138,9 @@ endif()
 target_include_directories(
   sercomm
   PRIVATE
-    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/public>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/public>"
     "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>"
     "$<INSTALL_INTERFACE:include>"
 )
@@ -221,14 +221,14 @@ if(WITH_DOCS)
   find_package(Doxygen REQUIRED)
 
   # Doxyfile variables
-  set(DOCS_TMPL_DIR ${CMAKE_SOURCE_DIR}/docs/template)
+  set(DOCS_TMPL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/template)
   set(DOCS_OUT_DIR ${CMAKE_BINARY_DIR}/docs)
 
-  set(DOCS_EXAMPLES_DIR ${CMAKE_SOURCE_DIR}/examples)
+  set(DOCS_EXAMPLES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/examples)
   set(DOCS_SRCS_LST
-    ${CMAKE_SOURCE_DIR}/README.md
-    ${CMAKE_SOURCE_DIR}/include/public
-    ${CMAKE_SOURCE_DIR}/examples
+    ${CMAKE_CURRENT_SOURCE_DIR}/README.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/public
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples
   )
 
   string(REPLACE ";" " " DOCS_SRCS "${DOCS_SRCS_LST}")
@@ -255,7 +255,7 @@ endif()
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-  "${CMAKE_SOURCE_DIR}/cmake/Config.cmake.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
   "${CMAKE_BINARY_DIR}/sercommConfig.cmake"
   INSTALL_DESTINATION "lib/cmake/sercomm"
 )
@@ -292,7 +292,7 @@ install(
 
 # Headers
 install(
-  DIRECTORY "${CMAKE_SOURCE_DIR}/include/public/sercomm"
+  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/public/sercomm"
   DESTINATION "include"
   COMPONENT headers
 )
