@@ -27,6 +27,8 @@
 
 #include "common.h"
 
+#include <stdint.h>
+
 SER_BEGIN_DECL
 
 /**
