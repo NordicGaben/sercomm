@@ -24,6 +24,7 @@
 
 #include "public/sercomm/dev.h"
 
+#include <stdlib.h>
 #include <limits.h>
 #include <pthread.h>
 
